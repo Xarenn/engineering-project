@@ -1,0 +1,37 @@
+version: "3.7"
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: "realtimechat"
+      POSTGRES_USER: "realtimechat"
+      POSTGRES_DB: "realtimechat"
+    ports:
+      - "5432:5432"
+    networks:
+      - network
+  zookeeper:
+    image: zookeeper:latest
+    restart: always
+    ports:
+      - "2181:2181"
+    networks:
+      - network
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    restart: always
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: "real-time-chat-db_zookeeper_1:2181"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://localhost:9092"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
+    ports:
+      - "9092:9092"
+    networks:
+      - network
+
+
+networks:
+  # Declare our private network.  We must declare one for the magic
+  #   # Docker DNS to work, but otherwise its default settings are fine.
+  network: {}
