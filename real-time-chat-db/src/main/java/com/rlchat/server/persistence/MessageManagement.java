@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +41,7 @@ public class MessageManagement {
         log.info("User with id: {} getting message objects", id);
 
         return Mono.justOrEmpty(messageObjectRepository
-                .getAllByFromUserOrToUser(object.get(), object.get().getId(), PageRequest.of(page, 3)))
+                .getAllByFromUserOrToUser(object.get(), object.get().getId(), PageRequest.of(page, 50)))
                 .flatMap(messageObjects -> Mono.justOrEmpty(messageObjects.map(MessageObjectDTO::map)));
     }
 
@@ -55,9 +56,29 @@ public class MessageManagement {
 
         Page<Message> messages = messageRepository.getAllByMessageObject(MessageObject.builder()
                 .id(messageObjectId).build(),
-                PageRequest.of(page, 20));
+                PageRequest.of(page, 50));
 
         return Mono.justOrEmpty(messages.map(MessageDTO::map));
+    }
+
+    public Mono<String> createNewUserObject(Principal principal, MessageObjectDTO message) {
+        final Long id = Long.parseLong(principal.getName());
+        final Optional<UserObject> object = userObjectRepository.findById(id);
+        if(object.isEmpty()) {
+            return Mono.error(new BadRequest("User not found with id: " + id));
+        }
+
+        final MessageObject messageObject = MessageObject.builder()
+                .fromUser(object.get())
+                .toUser(message.getToUser())
+                .toUserName(message.getToUserName())
+                .lastMessage(message.getLastMessage())
+                .lastMessageDate(LocalDateTime.now())
+                .build();
+
+        messageObjectRepository.save(messageObject);
+
+        return Mono.justOrEmpty("Success sent");
     }
 
 }

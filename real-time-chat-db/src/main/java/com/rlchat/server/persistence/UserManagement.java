@@ -8,6 +8,7 @@ import com.rlchat.server.security.util.JwtUtil;
 import com.rlchat.server.service.dto.LoginRequestDTO;
 import com.rlchat.server.service.dto.LoginResponseDTO;
 import com.rlchat.server.service.dto.RegisterRequestDTO;
+import com.rlchat.server.service.dto.UserObjectDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,9 @@ import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -40,6 +43,7 @@ public class UserManagement {
 
         return Mono.justOrEmpty(LoginResponseDTO.builder()
                         .id(userObject.get().getId())
+                        .name(userObject.get().getName())
                         .token(jwtUtil.generateToken(String.valueOf(userObject.get().getId()),
                                 Collections.singletonList(userObject.get().getRole())))
                 .build());
@@ -61,6 +65,13 @@ public class UserManagement {
 
         userObjectRepository.save(userObject1);
         return Mono.justOrEmpty("Register success");
+    }
+
+    public Mono<List<UserObjectDTO>> getAllUsers() {
+        return Mono.justOrEmpty(userObjectRepository.findAll()
+                .stream()
+                .map(UserObjectDTO::map)
+                .collect(Collectors.toList()));
     }
 
 }

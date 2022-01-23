@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
+
 @Slf4j
 @RestController
 @Component
@@ -32,32 +34,21 @@ public class MessageRouter {
         return ResponseEntity.ok("siema");
     }
 
-
     @MessageMapping("/room/message/{room}")
     @SendTo("/topic/messages/get")
     public MessageDTO greet(@DestinationVariable String room, MessageDTO message) throws Exception {
-        messagingTemplate.convertAndSend("/topic/messages/get", MessageDTO.builder()
+        final MessageDTO messageDTO = MessageDTO.builder()
                 .message(message.getMessage())
                 .fromUser(message.getFromUser())
                 .toUser(message.getToUser())
                 .messageObjectId(message.getMessageObjectId())
-                        .toUserName(message.getToUserName())
-                        .fromUserName(message.getFromUserName())
-                .build());
-        log.info("MESSAGE ARRIVED ROOM - {} FROM - {} TO - {} MSG - {}", room, message.getFromUser(), message.getToUser(), message.getMessage());
-        return MessageDTO.builder()
-                .message(message.getMessage())
-                .fromUser(message.getFromUser())
-                .toUser(message.getToUser())
                 .toUserName(message.getToUserName())
                 .fromUserName(message.getFromUserName())
-                .messageObjectId(message.getMessageObjectId())
                 .build();
-    }
 
-    @MessageMapping("/topic/messages/get")
-    public void getMessages(MessageDTO message) throws Exception {
-        log.info("MESSAGE ARRIVED TO GET FROM - {} TO - {} MSG - {}", message.getFromUser(), message.getToUser(), message.getMessage());
+        kafkaTemplate.send("messages-sent", messageDTO);
+        log.info("MESSAGE ARRIVED ROOM - {} FROM - {} TO - {} MSG - {}", room, message.getFromUser(), message.getToUser(), message.getMessage());
+        messagingTemplate.convertAndSend("/topic/messages/get/"+message.getMessageObjectId(), message);
+        return messageDTO;
     }
-
 }

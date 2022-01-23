@@ -15,8 +15,12 @@ import {toast, ToastContainer} from "react-toastify";
 import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 
-
 const theme = createTheme();
+
+export const reloadPageWithToken = (navigate) => {
+    localStorage.clear();
+    navigate('/login');
+}
 
 export default function LoginComponent() {
 
@@ -49,11 +53,17 @@ export default function LoginComponent() {
                 console.log(response);
                 console.log('token', response.data.token);
                 localStorage.setItem("token", response.data.token);
-                localStorage.setItem("id", response.data.id)
+                localStorage.setItem("id", response.data.id);
+                localStorage.setItem("name", response.data.name);
                 navigate('/');
             })
             .catch(function (error) {
                 console.log(error);
+                if(error?.message?.includes("JWT expired") || error?.errorMessage?.includes("JWT expired")) {
+                    localStorage.clear();
+                    window.location.reload();
+                    reloadPageWithToken(navigate);
+                }
             });
     };
 

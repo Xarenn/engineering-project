@@ -28,6 +28,12 @@ public class MessageController {
                 .onErrorMap(SpringSecurityConfig::mapError);
     }
 
+    @PostMapping("/messages/new/add")
+    public Mono<String> createNewMessageObject(Principal principal, @RequestBody MessageObjectDTO messageObjectDTO) {
+        return messageManagement.createNewUserObject(principal, messageObjectDTO)
+                .onErrorMap(SpringSecurityConfig::mapError);
+    }
+
     @GetMapping("/messages/data/{messageObjectId}")
     public Mono<Page<MessageDTO>> getMessagesByIdAndPage(Principal principal,
                                                          @PathVariable("messageObjectId") Integer messageObjectId,

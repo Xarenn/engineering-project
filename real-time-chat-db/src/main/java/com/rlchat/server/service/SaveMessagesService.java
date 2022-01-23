@@ -47,6 +47,8 @@ public class SaveMessagesService {
                     .time(LocalDateTime.now())
                     .userFrom(message.getFromUser())
                     .userTo(message.getToUser())
+                    .userFromName(message.getFromUserName())
+                    .userToName(message.getToUserName())
                     .build();
 
             messageObject.setMessages(Set.of(messageValue));
@@ -77,6 +79,8 @@ public class SaveMessagesService {
                 .time(LocalDateTime.now())
                 .userTo(messageDTO.getToUser())
                 .userFrom(messageDTO.getFromUser())
+                .userFromName(messageDTO.getFromUserName())
+                .userToName(messageDTO.getToUserName())
                 .build();
 
         messageRepository.save(messageValue);
