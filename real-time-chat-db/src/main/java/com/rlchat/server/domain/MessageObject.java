@@ -29,5 +29,6 @@ public class MessageObject {
     private UserObject fromUser;
 
     private long toUser;
+    private String toUserName;
 
 }

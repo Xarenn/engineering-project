@@ -24,6 +24,9 @@ public class Message {
     private LocalDateTime time;
 
     private long userFrom;
+    private String userFromName;
+
+    private String userToName;
     private long userTo;
 
     @ManyToOne(fetch = FetchType.LAZY)

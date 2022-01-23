@@ -36,7 +36,7 @@ public class SpringSecurityConfig implements WebFluxConfigurer {
     @Bean
     SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http) {
 
-        String[] patterns = new String[] {"/api/user/**", "/swagger-ui/**", "/webjars/**", "/exceptions/**",
+        String[] patterns = new String[] {"/api/user/**", "/api/kafka/**", "/swagger-ui/**", "/webjars/**", "/exceptions/**",
                 "/swagger-resources/**", "/v3/api-docs/**", "/v3/api-docs**", "/swagger-ui.html"};
 
         return http.cors().and()

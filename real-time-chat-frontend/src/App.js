@@ -1,56 +1,50 @@
 import './App.css';
-import SockJs from 'sockjs-client'
-import Stomp from 'stomp-websocket'
-import {useEffect, useState} from "react";
+import NavBarComponent from "./components/NavBarComponent";
+import { Routes, Route, Link } from "react-router-dom";
+import LoginComponent from "./components/LoginComponent";
+import RegisterComponent from "./components/RegisterComponent";
+import Logout from "./components/LogoutComponent";
+import MessageBoxComponent from "./components/MessageBoxComponent";
+
+function Home() {
+    return (
+        <>
+            <main>
+                <h2>Welcome to the homepage! HIU</h2>
+                <p>You can do this, I believe in you.</p>
+            </main>
+        </>
+    );
+}
+
+function About() {
+    return (
+        <>
+            <main>
+                <h2>Who are we?</h2>
+                <p>
+                    That feels like an existential question, don't you
+                    think?
+                </p>
+            </main>
+            <nav>
+                <Link to="/">Home</Link>
+            </nav>
+        </>
+    );
+}
 
 function App() {
-
-    const sock = new SockJs('http://localhost:8080/rl-time-websocket');
-    const stompClient = Stomp.over(sock);
-
-    const [text, setText] = useState('')
-    const [msgs, setMsgs] = useState([]);
-
-    useEffect(() => {
-        stompClient.debug = null
-        stompClient.connect({}, () => {
-            console.log("SUB FOR: ", '/topic/messages/get')
-            stompClient.subscribe('/topic/messages/get', function (msg) {
-                console.log('MSG', JSON.parse(msg.body));
-                setMsgs(messages =>[...messages, JSON.parse(msg.body).message]);
-            });
-        });
-    }, []);
-
-    const sendMessage = () => {
-        const messageObj = {
-            "message": text,
-            time: new Date(),
-            fromUser: 1,
-            toUser: 2,
-            messageObjectId: 3
-        }
-        stompClient.send('/app/room/message/1', {}, JSON.stringify(messageObj))
-    }
-
-    const onChange = (text) => {
-        setText(text.target.value)
-    }
-
     return <div>
-
-        <label>
-            Text:
-            <input type="text" name="name" onChange={onChange}/>
-        </label>
-        <button onClick={sendMessage}>
-            SendMsg
-        </button>
-        <ul>
-        {msgs.map(function(data, index) {
-            return <li key={ index }>{data}</li>;
-        })}
-        </ul>
+        <NavBarComponent/>
+        <Routes handler={App}>
+            <Route path="/" element={<Home />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="about" element={<About />} />
+            <Route path="login" element={<LoginComponent />} />
+            <Route path="register" element={<RegisterComponent />} />
+            <Route path="messages" element={<MessageBoxComponent />} />
+        </Routes>
     </div>;
 }
 

@@ -39,6 +39,7 @@ public class UserManagement {
         }
 
         return Mono.justOrEmpty(LoginResponseDTO.builder()
+                        .id(userObject.get().getId())
                         .token(jwtUtil.generateToken(String.valueOf(userObject.get().getId()),
                                 Collections.singletonList(userObject.get().getRole())))
                 .build());

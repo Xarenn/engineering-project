@@ -10,6 +10,6 @@ import org.springframework.stereotype.Component;
 @Component
 public interface MessageObjectRepository extends JpaRepository<MessageObject, Long> {
 
-    Page<MessageObject> getAllByFromUserAndToUser(UserObject fromUser, Long toUser, Pageable pageable);
+    Page<MessageObject> getAllByFromUserOrToUser(UserObject fromUser, Long toUser, Pageable pageable);
 
 }

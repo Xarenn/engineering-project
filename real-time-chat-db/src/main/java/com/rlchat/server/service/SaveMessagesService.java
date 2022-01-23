@@ -36,6 +36,7 @@ public class SaveMessagesService {
             final MessageObject messageObject = MessageObject.builder()
                     .fromUser(getUserObjectById(message.getFromUser()))
                     .toUser(message.getToUser())
+                    .toUserName(message.getToUserName())
                     .lastMessage(message.getMessage())
                     .lastMessageDate(LocalDateTime.now())
                     .build();

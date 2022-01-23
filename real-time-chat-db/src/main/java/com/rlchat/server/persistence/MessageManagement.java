@@ -10,6 +10,7 @@ import com.rlchat.server.persistence.repositories.UserObjectRepository;
 import com.rlchat.server.service.dto.MessageDTO;
 import com.rlchat.server.service.dto.MessageObjectDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class MessageManagement {
@@ -35,8 +37,10 @@ public class MessageManagement {
             return Mono.error(new BadRequest("User not found with id: " + id));
         }
 
+        log.info("User with id: {} getting message objects", id);
+
         return Mono.justOrEmpty(messageObjectRepository
-                .getAllByFromUserAndToUser(object.get(), object.get().getId(), PageRequest.of(page, 3)))
+                .getAllByFromUserOrToUser(object.get(), object.get().getId(), PageRequest.of(page, 3)))
                 .flatMap(messageObjects -> Mono.justOrEmpty(messageObjects.map(MessageObjectDTO::map)));
     }
 
@@ -46,6 +50,8 @@ public class MessageManagement {
         if(object.isEmpty()) {
             return Mono.error(new BadRequest("User not found with id: " + id));
         }
+
+        log.info("User with id: {} getting messages by object {}", id, messageObjectId);
 
         Page<Message> messages = messageRepository.getAllByMessageObject(MessageObject.builder()
                 .id(messageObjectId).build(),

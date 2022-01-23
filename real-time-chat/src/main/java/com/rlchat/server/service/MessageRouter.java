@@ -3,6 +3,7 @@ package com.rlchat.server.service;
 import com.rlchat.server.service.dto.MessageDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.consumer.internals.KafkaConsumerMetrics;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -21,11 +22,13 @@ public class MessageRouter {
 
     private final KafkaTemplate<String, MessageDTO> kafkaTemplate;
     private final SimpMessagingTemplate messagingTemplate;
-
+    private final KafkaMetricsReceiver kafkaMetricsReceiver;
 
     @GetMapping("/test-send")
     public ResponseEntity<String> sendMessageRequest() {
-        kafkaTemplate.send("messages-sent", MessageDTO.builder().message("A chujnia").fromUser(1).toUser(2).messageObjectId(3L).build());
+        kafkaTemplate.send("messages-sent",
+                MessageDTO.builder().message("A chujnia").fromUser(1).toUser(2).messageObjectId(3L).build());
+        kafkaMetricsReceiver.getKafkaMetrics();
         return ResponseEntity.ok("siema");
     }
 
@@ -38,12 +41,16 @@ public class MessageRouter {
                 .fromUser(message.getFromUser())
                 .toUser(message.getToUser())
                 .messageObjectId(message.getMessageObjectId())
+                        .toUserName(message.getToUserName())
+                        .fromUserName(message.getFromUserName())
                 .build());
         log.info("MESSAGE ARRIVED ROOM - {} FROM - {} TO - {} MSG - {}", room, message.getFromUser(), message.getToUser(), message.getMessage());
         return MessageDTO.builder()
                 .message(message.getMessage())
                 .fromUser(message.getFromUser())
                 .toUser(message.getToUser())
+                .toUserName(message.getToUserName())
+                .fromUserName(message.getFromUserName())
                 .messageObjectId(message.getMessageObjectId())
                 .build();
     }
@@ -54,5 +61,3 @@ public class MessageRouter {
     }
 
 }
-
-
