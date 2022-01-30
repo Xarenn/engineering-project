@@ -35,9 +35,9 @@ public class KafkaMetricsReceiver {
                                     key -> new Random().nextInt()+":"+key.getKey().name(), value -> value.getValue().metricValue()
                             )))
                     .build();
-            System.out.println("------------------------For client id : " + clientid);
+            //System.out.println("------------------------For client id : " + clientid);
             metricMap.forEach((metricName, metricValue) -> {
-                System.out.println("------------Metric name: " + metricName.name() + "-----------Metric value: " + metricValue.metricValue());
+                //System.out.println("------------Metric name: " + metricName.name() + "-----------Metric value: " + metricValue.metricValue());
 
             });
             metricsDTOS.add(kafkaMetricsDTO);

@@ -1,8 +1,10 @@
 package com.rlchat.server.service;
 
 import com.rlchat.server.service.dto.MessageDTO;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.apache.kafka.clients.consumer.internals.KafkaConsumerMetrics;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -29,14 +31,13 @@ public class MessageRouter {
     @GetMapping("/test-send")
     public ResponseEntity<String> sendMessageRequest() {
         kafkaTemplate.send("messages-sent",
-                MessageDTO.builder().message("A chujnia").fromUser(1).toUser(2).messageObjectId(3L).build());
+                           MessageDTO.builder().message("A chujnia").fromUser(1).toUser(2).messageObjectId(3L).build());
         kafkaMetricsReceiver.getKafkaMetrics();
         return ResponseEntity.ok("siema");
     }
 
     @MessageMapping("/room/message/{room}")
-    @SendTo("/topic/messages/get")
-    public MessageDTO greet(@DestinationVariable String room, MessageDTO message) throws Exception {
+    public MessageDTO prepareAndSendMessage(@DestinationVariable String room, MessageDTO message) {
         final MessageDTO messageDTO = MessageDTO.builder()
                 .message(message.getMessage())
                 .fromUser(message.getFromUser())
@@ -47,8 +48,10 @@ public class MessageRouter {
                 .build();
 
         kafkaTemplate.send("messages-sent", messageDTO);
-        log.info("MESSAGE ARRIVED ROOM - {} FROM - {} TO - {} MSG - {}", room, message.getFromUser(), message.getToUser(), message.getMessage());
-        messagingTemplate.convertAndSend("/topic/messages/get/"+message.getMessageObjectId(), message);
+        log.info("MESSAGE ARRIVED ROOM - {} FROM - {} TO - {} MSG - {}", room,
+                 message.getFromUser(), message.getToUser(), message.getMessage());
+        messagingTemplate.convertAndSend("/topic/messages/get/" + message.getMessageObjectId(),
+                                         message);
         return messageDTO;
     }
 }
