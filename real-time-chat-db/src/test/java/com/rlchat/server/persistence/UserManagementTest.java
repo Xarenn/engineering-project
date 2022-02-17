@@ -68,14 +68,12 @@ class UserManagementTest {
         when(userObjectRepository.getUserObjectByLogin(registerRequestDTO.getLogin()))
                 .thenReturn(Optional.of(UserObject.builder().build()));
 
-        BadRequest badRequest = assertThrows(BadRequest.class, () -> objectUnderTest.registerUser(registerRequestDTO).block());
+        BadRequest badRequest = assertThrows(BadRequest.class, () -> objectUnderTest
+                .registerUser(registerRequestDTO).block());
 
         verify(userObjectRepository).getUserObjectByLogin(any());
         verifyNoMoreInteractions(userObjectRepository);
         assertEquals(badRequest.getMessage(), "User found with login: login");
     }
 
-    @Test
-    void getAllUsers() {
-    }
 }
