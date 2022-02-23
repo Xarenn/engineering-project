@@ -33,13 +33,6 @@ services:
       - "9092:9092"
     networks:
       - network
-  real-time-chat-frontend:
-    build: real-time-chat-frontend
-    container_name: real-time-chat-frontend
-    networks:
-      - network
-    ports:
-      - "3000:3000"
 
 networks:
   # Declare our private network.  We must declare one for the magic
