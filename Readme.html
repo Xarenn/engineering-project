@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorial</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="aplikacja-do-wysyłania-informacji-w-modelu-asynchronicznym">Aplikacja do wysyłania informacji w modelu asynchronicznym</h1>
+<p>Instrukcja konfiguracji środowiska systemowego dla aplikacji. Potrzebne nam będzie narzędzie o nazwie Docker aby uruchomić poprawnie serwisy oraz infrastrukturę.</p>
+<p>Wymagania systemowe aby uruchomic system mikroserwisowy na podstawie docker’a.<br>
+Nalezy miec (minimalne wymagania):</p>
+<ul>
+<li>64-bit procesor</li>
+<li>4GB system RAM.</li>
+<li>Obsługa wirtualizacji sprzętu na poziomie systemu BIOS musi być włączona w ustawieniach systemu BIOS.</li>
+</ul>
+<h2 id="docker-engine">Docker engine</h2>
+<p>Wchodzimy na stronę dockera, najlepiej zainstalować wersję Docker Desktop, jeśli nie jesteśmy wstanie jej zainstalować potrzebna będzie instalacja manualna - rozdział <strong>Docker engine manual</strong></p>
+<pre><code>https://docs.docker.com/get-docker/
+</code></pre>
+<p>Następnie przechodzimy do głównego folderu używając powłoki systemowej czyli:</p>
+<p>Windows: cmd - Wiersz poleceń CMD<br>
+Linux: terminal<br>
+MacOS: terminal</p>
+<p>Powinniśmy widzieć i być w folderze składającym się z tych folderów i plików docker-compose.<br>
+<img src="https://i.imgur.com/p8zAoQY.png" alt="enter image description here"></p>
+<p>Docker Desktop, zainstalował nam w pełni wszystkie pakiety potrzebne do zarzadzania dockerem. Pamietajmy aby Docker Desktop byl uruchomiony w tle oraz po instalacji wymagane jest aby zrestartowac komputer. Jeśli chcemy korzystać w pełni z dockeryzowanych aplikacji wpisujemy po prostu komende</p>
+<pre><code>docker-compose up --build
+</code></pre>
+<p>lub (ponizsza komenda nie bedzie nam wypisywac logów z poszczególnych serwisów)</p>
+<pre><code>docker-compose up -d --build
+</code></pre>
+<p>następnie powinniśmy zobaczyć takie logi:<br>
+<img src="https://i.imgur.com/ulxBind.png" alt="enter image description here"></p>
+<p>to oznacza ze wszystkie serwisy zostaly zbudowane.<br>
+Nastepnie powinnismy widziec przy uzyciu komendy</p>
+<pre><code>docker ps
+</code></pre>
+<p>taki wynik:<br>
+<img src="https://i.imgur.com/fEj4NY4.png" alt="enter image description here"></p>
+<p>serwisy teraz dzialaja po dockerowej sieci wewnetrznej. Natomiast sa dostepne z poziomu terminala oraz przegladarki internetowej.</p>
+<p><img src="https://i.imgur.com/2cQNX8E.png" alt="enter image description here"></p>
+<p>Jak widzimy strona internetowa aplikacji czyli real-time-chat-frontend dziala na porcie 3000.</p>
+<h2 id="uruchamianie-systemu-z-poziomu-terminalaintellij-idea">Uruchamianie systemu z poziomu terminala/intellij idea</h2>
+<p>Zalozenia aplikacyjne:<br>
+<a href="https://chocolatey.org/install">https://chocolatey.org/install</a> - opcjonalnie, zarzadza pakietami na systemie windows<br>
+<a href="https://brew.sh/index_pl">https://brew.sh/index_pl</a> - opcjonalne(polecane), zarzadza pakietami na systemie MacOS<br>
+<a href="https://sdkman.io/">https://sdkman.io/</a> - dla unixowych systemow</p>
+<p>Gradle wersja 7.3.3<br>
+<a href="https://gradle.org/install/">https://gradle.org/install/</a><br>
+<a href="https://community.chocolatey.org/packages/gradle">https://community.chocolatey.org/packages/gradle</a><br>
+Wersja java JDK 11<br>
+<a href="https://www.openlogic.com/openjdk-downloads">https://www.openlogic.com/openjdk-downloads</a><br>
+Node wersja 17.4.0<br>
+<a href="https://nodejs.org/en/download/current/">https://nodejs.org/en/download/current/</a><br>
+<a href="https://nodejs.org/en/blog/release/v17.4.0/">https://nodejs.org/en/blog/release/v17.4.0/</a> ( na samym dole sa linki do pobrania na kazdy system )</p>
+<p>Aplikacje mozna uruchomic rowniez recznie, wystarczy uruchomic podstawowe aplikacje infrastrukturalne takie jak postgres, kafka oraz zookeeper korzystajac z docker-compose-local. Komenda (pamietajmy, musimy byc w glownym folderze tam gdzie istnieje ten plik ‘docker-compose-local.yml’ ):</p>
+<pre><code>docker-compose -f docker-compose-local.yml up -d --build
+</code></pre>
+<p>Nastepnie z poziomu intellija, importujemy aplikacje real-time-chat oraz real-time-chat-db oraz frontend. Nalezy pamietac o poprzednim zainstalowaniu odpowiedniej wersji Gradle, poniewaz czasami intellij moze pobrac za stara lub zbyt nowa wersje. Nalezy z tym uwazac. Po zainstalowaniu pakietow przez Intellija ustawiamy w aplikacji (real-time-chat oraz real-time-chat-db) taka konfiguracje:<br>
+<img src="https://i.imgur.com/g8InqF4.png" alt="enter image description here"></p>
+<p>Ustawiamy active profiles na local, lub dodajemy do VM options</p>
+<pre><code>-Dspring.profiles.active=local
+</code></pre>
+<p>I klikamy RUN.(Intellij prawy gorny rog)</p>
+<h3 id="aplikacje-backendowe-przy-uzyciu-terminala">Aplikacje backendowe przy uzyciu terminala</h3>
+<p>Wstepnie nalezy sprawdzic czy mamy gradle oraz java dodany do glownego PATH’a tak aby moc korzystac z nich podczas wpisywania komend w konsoli (terminal/CMD).</p>
+<p>Nastepnie nalezy wejsc do kazdego folderu (real-time-chat-db oraz real-time-chat) i wpisujemy komende <code>gradle build</code></p>
+<p><img src="https://i.imgur.com/En9tj3M.png" alt="enter image description here"></p>
+<p>Tak zbudowany projekt, posiada w sobie w pelni zbudowanego jara.<br>
+Nastepnie z uzyciem komendy (bedac w folderze danego projektu) wpisujemy zaleznie od tego co sie w tym folderze znajduje.</p>
+<pre><code>java -jar build/libs/real-time-chat-db-1.0-SNAPSHOT.jar
+</code></pre>
+<p>Dla aplikacji real-time-chat (bez db), odpowiedni inny wygenerowany jar.</p>
+<pre><code>java -jar build/libs/real-time-chat-1.0-SNAPSHOT.jar
+</code></pre>
+<p>Powinnismy po odpaleniu tych metod zobaczyc odpalajacy sie serwer tomcat wraz z kontekstem springa.<br>
+<img src="https://i.imgur.com/oVDWh0o.png" alt="enter image description here"></p>
+<h3 id="aplikacja-frontendowa">Aplikacja frontendowa</h3>
+<p>Przy aplikacji frontendowej, nalezy zainstalowac node w wersji 17.4.0.<br>
+Skorzystac z package managera YARN lub NPM i wykonac w glownym folderze odpowiednio komende<br>
+<code>yarn</code> lub <code>npm install</code><br>
+Powinnismy uzyskac mniej wiecej taki wynik (tutaj pakiety juz sa zainstalowane).<br>
+<img src="https://i.imgur.com/0d06BZi.png" alt="enter image description here"></p>
+<p>nastepnie wpisujemy komende <code>yarn start</code> lub <code>npm start</code></p>
+<p><img src="https://i.imgur.com/RmUfytw.png" alt="enter image description here"></p>
+<h2 id="docker-engine-manual">Docker engine manual</h2>
+<p>Przy instalacji docker engine, bez uzycia docker desktop nalezy pamietac o instalacji dodatkowego pakietu zewnetrzengo docker-compose.</p>
+<p>Tutaj instalacja docker’a na systemy unixowe np ubuntu<br>
+<a href="https://docs.docker.com/engine/install/ubuntu/">https://docs.docker.com/engine/install/ubuntu/</a></p>
+<p>Tutaj sa instrukcje jak zainstalowac docker-compose na rozne systemy.<br>
+<a href="https://docs.docker.com/compose/install/">https://docs.docker.com/compose/install/</a></p>
+<p>Do zainstalowania tego na MacOS<br>
+nie wystarczy samo brew. Polecam ten sposob autora: <a href="https://stackoverflow.com/users/303363/susam-pal">Susam Pal</a><br>
+<a href="https://stackoverflow.com/questions/40523307/brew-install-docker-does-not-include-docker-engine">https://stackoverflow.com/questions/40523307/brew-install-docker-does-not-include-docker-engine</a></p>
+<p>Rowniez dockera mozemy zainstalowac na windowsie korzystajac z chocolatey<br>
+<a href="https://community.chocolatey.org/packages/docker-engine">https://community.chocolatey.org/packages/docker-engine</a><br>
+<a href="https://community.chocolatey.org/packages/docker-desktop">https://community.chocolatey.org/packages/docker-desktop</a></p>
+</div>
+</body>
+
+</html>
