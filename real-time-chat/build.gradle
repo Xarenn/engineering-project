@@ -12,8 +12,14 @@ buildscript {
     }
 }
 
-plugins {
-    id 'java'
+apply plugin: 'java'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'java-library'
+apply plugin: 'org.springframework.boot'
+
+compileJava   {
+    sourceCompatibility = '11'
+    targetCompatibility = '11'
 }
 
 group 'com.rlchat'

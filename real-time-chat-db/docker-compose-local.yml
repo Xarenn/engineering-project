@@ -33,36 +33,9 @@ services:
       - "9092:9092"
     networks:
       - network
-  real-time-chat-db:
-    build: real-time-chat-db
-    container_name: real-time-chat-db
-    links:
-      - "postgres:database"
-    depends_on:
-      - postgres
-      - kafka
-    networks:
-      - network
-    ports:
-      - "8081:8081"
-  real-time-chat:
-    build: real-time-chat
-    container_name: real-time-chat
-    links:
-      - "postgres:database"
-    depends_on:
-      - postgres
-      - kafka
-    networks:
-      - network
-    ports:
-      - "8080:8080"
   real-time-chat-frontend:
     build: real-time-chat-frontend
     container_name: real-time-chat-frontend
-    depends_on:
-      - real-time-chat
-      - real-time-chat-db
     networks:
       - network
     ports:

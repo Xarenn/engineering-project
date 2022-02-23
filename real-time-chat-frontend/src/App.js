@@ -10,9 +10,13 @@ import axios from "axios";
 function Home() {
     return (
         <>
-            <main>
-                <h2>Welcome to the homepage! HIU</h2>
-                <p>You can do this, I believe in you.</p>
+            <main style={{marginLeft: '20px'}}>
+                <h2>Witaj na aplikacji RealTimeChat</h2>
+                <p>Diabeł tkwi w szczegółach - cała magia kryję się na serwerze;)</p>
+                <h2>Who am I?</h2>
+                <p>
+                    Entuzjast systemów low latency, real time oraz miłośnik programowania w językach wysokiego poziomu (Java, Python, JS)
+                </p>
             </main>
         </>
     );
@@ -22,10 +26,9 @@ function About() {
     return (
         <>
             <main>
-                <h2>Who are we?</h2>
+                <h2>Who am I?</h2>
                 <p>
-                    That feels like an existential question, don't you
-                    think?
+                    Entuzjast systemów low latency, real time oraz miłośnik programowania w językach
                 </p>
             </main>
             <nav>

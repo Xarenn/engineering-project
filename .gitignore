@@ -8,4 +8,4 @@ gradle/
 .gradle/
 .DS_Store
 node_modules/
-.gradle/
+.ggradle/
