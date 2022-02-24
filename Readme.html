@@ -66,6 +66,7 @@ Node wersja 17.4.0<br>
 <p>Ustawiamy active profiles na local, lub dodajemy do VM options</p>
 <pre><code>-Dspring.profiles.active=local
 </code></pre>
+<p><strong>UWAGA: APLIKACJA REAL-TIME-CHAT</strong> <strong>- ABY URUCHOMIĆ LOKALNIE APLIKACJE REAL-TIME-CHAT NALEŻY WEJŚĆ W KLASE MAIN W REAL-TIME-CHAT PROJEKT ORAZ ZAKOMENTOWAĆ LINIJKI 26-31 (METODA admin())</strong></p>
 <p>I klikamy RUN.(Intellij prawy gorny rog)</p>
 <h3 id="aplikacje-backendowe-przy-uzyciu-terminala">Aplikacje backendowe przy uzyciu terminala</h3>
 <p>Wstepnie nalezy sprawdzic czy mamy gradle oraz java dodany do glownego PATH’a tak aby moc korzystac z nich podczas wpisywania komend w konsoli (terminal/CMD).</p>
@@ -73,10 +74,10 @@ Node wersja 17.4.0<br>
 <p><img src="https://i.imgur.com/En9tj3M.png" alt="enter image description here"></p>
 <p>Tak zbudowany projekt, posiada w sobie w pelni zbudowanego jara.<br>
 Nastepnie z uzyciem komendy (bedac w folderze danego projektu) wpisujemy zaleznie od tego co sie w tym folderze znajduje.</p>
-<pre><code>java -jar build/libs/real-time-chat-db-1.0-SNAPSHOT.jar
+<pre><code>java -jar build/libs/real-time-chat-db-1.0-SNAPSHOT.jar --spring.profiles.active=local
 </code></pre>
 <p>Dla aplikacji real-time-chat (bez db), odpowiedni inny wygenerowany jar.</p>
-<pre><code>java -jar build/libs/real-time-chat-1.0-SNAPSHOT.jar
+<pre><code>java -jar build/libs/real-time-chat-1.0-SNAPSHOT.jar --spring.profiles.active=local
 </code></pre>
 <p>Powinnismy po odpaleniu tych metod zobaczyc odpalajacy sie serwer tomcat wraz z kontekstem springa.<br>
 <img src="https://i.imgur.com/oVDWh0o.png" alt="enter image description here"></p>
@@ -100,6 +101,7 @@ nie wystarczy samo brew. Polecam ten sposob autora: <a href="https://stackoverfl
 <p>Rowniez dockera mozemy zainstalowac na windowsie korzystajac z chocolatey<br>
 <a href="https://community.chocolatey.org/packages/docker-engine">https://community.chocolatey.org/packages/docker-engine</a><br>
 <a href="https://community.chocolatey.org/packages/docker-desktop">https://community.chocolatey.org/packages/docker-desktop</a></p>
+<p>W razie problemów kontakt - <a href="mailto:karolpiasecki21@gmail.com">karolpiasecki21@gmail.com</a></p>
 </div>
 </body>
 

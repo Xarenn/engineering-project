@@ -68,7 +68,6 @@ Aplikacje mozna uruchomic rowniez recznie, wystarczy uruchomic podstawowe aplika
 ```
 docker-compose -f docker-compose-local.yml up -d --build
 ```
-
 Nastepnie z poziomu intellija, importujemy aplikacje real-time-chat oraz real-time-chat-db oraz frontend. Nalezy pamietac o poprzednim zainstalowaniu odpowiedniej wersji Gradle, poniewaz czasami intellij moze pobrac za stara lub zbyt nowa wersje. Nalezy z tym uwazac. Po zainstalowaniu pakietow przez Intellija ustawiamy w aplikacji (real-time-chat oraz real-time-chat-db) taka konfiguracje:
 ![enter image description here](https://i.imgur.com/g8InqF4.png)
 
@@ -76,6 +75,8 @@ Ustawiamy active profiles na local, lub dodajemy do VM options
 ```
 -Dspring.profiles.active=local
 ```
+**UWAGA: APLIKACJA REAL-TIME-CHAT** **- ABY URUCHOMIĆ LOKALNIE APLIKACJE REAL-TIME-CHAT NALEŻY WEJŚĆ W KLASE MAIN W REAL-TIME-CHAT PROJEKT ORAZ ZAKOMENTOWAĆ LINIJKI 26-31 (METODA admin())**
+
 I klikamy RUN.(Intellij prawy gorny rog)
 
 ### Aplikacje backendowe przy uzyciu terminala
@@ -89,13 +90,13 @@ Nastepnie nalezy wejsc do kazdego folderu (real-time-chat-db oraz real-time-chat
 Tak zbudowany projekt, posiada w sobie w pelni zbudowanego jara.
 Nastepnie z uzyciem komendy (bedac w folderze danego projektu) wpisujemy zaleznie od tego co sie w tym folderze znajduje.
 ```
-java -jar build/libs/real-time-chat-db-1.0-SNAPSHOT.jar
+java -jar build/libs/real-time-chat-db-1.0-SNAPSHOT.jar --spring.profiles.active=local
 ```
 
 Dla aplikacji real-time-chat (bez db), odpowiedni inny wygenerowany jar.
 
 ```
-java -jar build/libs/real-time-chat-1.0-SNAPSHOT.jar
+java -jar build/libs/real-time-chat-1.0-SNAPSHOT.jar --spring.profiles.active=local
 ```
 
 Powinnismy po odpaleniu tych metod zobaczyc odpalajacy sie serwer tomcat wraz z kontekstem springa.
@@ -132,3 +133,5 @@ https://stackoverflow.com/questions/40523307/brew-install-docker-does-not-includ
 Rowniez dockera mozemy zainstalowac na windowsie korzystajac z chocolatey
 https://community.chocolatey.org/packages/docker-engine
 https://community.chocolatey.org/packages/docker-desktop
+
+W razie problemów kontakt - karolpiasecki21@gmail.com
