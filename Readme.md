@@ -133,5 +133,3 @@ https://stackoverflow.com/questions/40523307/brew-install-docker-does-not-includ
 Rowniez dockera mozemy zainstalowac na windowsie korzystajac z chocolatey
 https://community.chocolatey.org/packages/docker-engine
 https://community.chocolatey.org/packages/docker-desktop
-
-W razie problemów kontakt - karolpiasecki21@gmail.com
